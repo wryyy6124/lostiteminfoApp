@@ -38,13 +38,13 @@ const PostPage = () => {
 
       // 投稿データをデータベースに挿入
       const { error: dbError } = await supabase.from('posts').insert({
-        title,
-        description,
-        date,
-        time,
-        location,
-        additional_info: additionalInfo,
-        image_url: imageUrl,
+        lostitem_name : title,
+        comment : description,
+        find_date : date,
+        find_time : time,
+        find_place : location,
+        remarks_column : additionalInfo,
+        file_url : imageUrl,
       });
 
       if (dbError) {
