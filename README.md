@@ -1,3 +1,4 @@
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -35,3 +36,71 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 # lostiteminfoApp
+
+# lostiteminfoApp
+
+## 開発 Tips
+
+### PullRequest
+
+**1. プルリクエスト前の作業**
+
+プルリクエストを上げる前に必ず、自分が作業を行なっているブランチで `git pull origin main` を行うこと。<br/>
+もし、コンフリクトが発生したら、ローカル上で解決する、解決の仕方がわからない場合は、メンバーに相談すること。
+
+**2. `git pull origin main` を行なった後の作業**
+
+remote に変更があった場合は、 `git pull origin main` のコマンドを実行し、remote の変更を取り込む。<br/>
+package に更新がないか、確認するため、 `npm install` コマンドを実行する。<br/>
+`found 0 vulnerabilities` と表示されれば OK。
+
+**3. プルリクエスト作成時**
+
+- `PullRequestTemplate`を使ってください。
+- 作ったブランチから main ブランチへマージするプルリクを作ってください。
+- プルリクに issue 番号を紐付けてください。
+- レビュアーに assign つけてください。（複数つけても OK）
+- レビュー依頼の際は、PR 内にメンションコメント＆念の為 Slack にてレビュアーに声掛けお願いします。
+
+**4. マージ**
+
+- マージはスカッシュコミット（プルリク内のコミットを 1 つににまとめてコミット）でお願いします。
+  - マージの際に`Marge Pull Request`ではなく`Squash and merge`を選んでマージしてください。
+
+### Branch
+
+### ブランチ命名規則（**プレフィックス**をつける）
+
+- feature: 機能追加
+- fix: コード修正
+- bug: バグ修正
+
+※ 該当項目がない場合は適宜追加
+
+**＜例＞**
+
+```
+git checkout -b 'feature/todotop_layout'
+git checkout -b 'fix/todotop_layout'
+git checkout -b 'bug/todotop_layout'
+```
+
+### Commit
+
+### コミットメッセージ
+
+- 日本語もしくは英語で端的に
+
+**＜例＞**
+
+```
+git commit -m 'Top画面 作成'
+git commit -m 'create top layout'
+```
+
+## 推奨 VScode 拡張機能
+
+- [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph&ssr=false#qna) コミットの一覧 → 詳細を閲覧できる
+- [Git History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory) ファイルの履歴などを確認できる
+- [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) 視覚的にリポジトリ、ブランチ、ファイル、コミットの状態を確認や操作することができる
+
