@@ -63,7 +63,7 @@ const Login = () => {
           <div className={styles.button}>
             <button
               type="submit"
-              className="flex w-5/6 md:w-1/2 justify-center rounded-lg bg-gray-950 p-3 text-sm font-semibold leading-6 text-white shadow-sm"
+              className="flex w-5/6 md:w-1/2 justify-center rounded-lg bg-gray-950 p-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
             >
               ログイン
             </button>
@@ -71,7 +71,7 @@ const Login = () => {
           <div className={styles.button}>
             <button
               type="submit"
-              className="flex w-5/6 md:w-1/2 justify-center rounded-lg border-2 border-black bg-white p-3 text-sm font-semibold leading-6 text-black shadow-sm"
+              className="flex w-5/6 md:w-1/2 justify-center rounded-lg border-2 border-black bg-white p-3 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-100"
             >
               ID・パスワードをお忘れですか &#129299;
             </button>
