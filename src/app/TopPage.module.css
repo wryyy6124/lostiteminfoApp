@@ -10,30 +10,6 @@
   border: none;
 }
 
-/* .circle_width {
-  border-color: rgb(17, 17, 255);
-  color: rgb(17, 17, 255);
-  border-radius: 50%;
-  font-size: clamp(1.2rem, 3vw, 1.4rem);
-  width: 2.25em;
-}
-
-.circle_height {
-  padding-top: 100%;
-}
-
-.circle_letter::after {
-  content: "未";
-} */
-
-/* [class$="is_paid"] {
-  border-color: rgb(255, 17, 17);
-  color: rgb(255, 17, 17);
-}
-[class$="is_paid"] p::after {
-  content: "済";
-} */
-
 .footer {
   box-shadow: 0 -4px 12px rgb(230, 230, 230, 0.7);
 }
