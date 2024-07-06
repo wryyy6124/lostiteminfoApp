@@ -155,8 +155,8 @@ const PostPage = () => {
           {loading ? '投稿中...' : '投稿する'}
         </button>
       </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-      {success && <p className="text-green-500 mt-4">{success}</p>}
+      {error && <p className="text-red-500 mt-10">{error}</p>}
+      {success && <p className="text-green-500 mt-10">{success}</p>}
       <div className="text-center mt-10 mb-10">
         <p>-----------------------------------</p>
         <p>フッター</p>
