@@ -67,18 +67,12 @@ const Login = () => {
       <footer
         className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
       >
-        <ul className={`w-fit mx-auto flex gap-10 py-2`}>
+        <ul className={`w-fit mx-auto flex py-2`}>
           <li className={`text-center`}>
             <span className={`text-3xl inline-block place-self-center p-2`}>
-              📝
+              🚪
             </span>
-            <span className={`block text-sm font-bold`}>アカウント情報</span>
-          </li>
-          <li className={`text-center`}>
-            <span className={`text-3xl inline-block place-self-center p-2`}>
-              🔓
-            </span>
-            <span className={`block text-sm font-bold`}>ログオフする</span>
+            <span className={`block text-sm font-bold`}>戻る</span>
           </li>
         </ul>
       </footer>
