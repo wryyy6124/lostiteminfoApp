@@ -3,40 +3,36 @@
 }
 
 .item_list > li {
-  gap: 1.5rem;
+  gap: 1rem 1.5rem;
 }
 
 .item_list > li:last-of-type {
   border: none;
 }
 
-.circle_width {
+/* .circle_width {
+  border-color: rgb(17, 17, 255);
+  color: rgb(17, 17, 255);
   border-radius: 50%;
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
-  width: 7%;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  width: 2.25em;
 }
 
 .circle_height {
   padding-top: 100%;
 }
 
-.is_paid {
+.circle_letter::after {
+  content: "未";
+} */
+
+/* [class$="is_paid"] {
   border-color: rgb(255, 17, 17);
   color: rgb(255, 17, 17);
 }
-
-.is_paid .circle_height > p::after {
+[class$="is_paid"] p::after {
   content: "済";
-}
-
-.is_unpaid {
-  border-color: rgb(17, 17, 255);
-  color: rgb(17, 17, 255);
-}
-
-.is_unpaid .circle_height > p::after {
-  content: "未";
-}
+} */
 
 .footer {
   box-shadow: 0 -4px 12px rgb(230, 230, 230, 0.7);

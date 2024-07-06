@@ -22,7 +22,7 @@ export default function TopPage() {
       <main className={`w-full`}>
         <div className={`w-full`}>
           <h2
-            className={`w-full bg-neutral-100 text-lg font-bold sticky top-0  ${styles.contents_h2}`}
+            className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
           >
             <div className={`w-full max-w-5xl mx-auto p-4`}>
               🗒️ おとしものリスト
@@ -41,15 +41,16 @@ export default function TopPage() {
               />
             </div>
             <ol className={`w-full max-w-3xl mx-auto ${styles.item_list}`}>
+              {/* 一番上のリストだけ「済」マーク */}
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_paid}`}
+                  className={`z-0 border-2 border-solid text-center max-w-12 circle_width is_paid`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -70,14 +71,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -98,14 +99,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -126,14 +127,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -154,14 +155,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -182,14 +183,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -210,14 +211,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
@@ -238,14 +239,14 @@ export default function TopPage() {
                 </div>
               </li>
               <li
-                className={`flex flex-wrap flex-row items-center w-full max-w-3xl mx-auto py-6 border-b-2 border-b-solid border-gray-200`}
+                className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
               >
                 <div
-                  className={`border-2 border-solid text-center max-w-10 ${styles.circle_width} ${styles.is_unpaid}`}
+                  className={`border-2 border-solid text-center max-w-12 z-0 circle_width`}
                 >
-                  <div className={`relative ${styles.circle_height}`}>
+                  <div className={`relative circle_height`}>
                     <p
-                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0`}
+                      className={`flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 circle_letter`}
                     ></p>
                   </div>
                 </div>
