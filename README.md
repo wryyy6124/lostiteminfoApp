@@ -75,6 +75,17 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## 開発 Tips
 
+### Issue
+
+- Issue にてタスクや問題を書いてください。
+- `IssueTemplate` を使ってください。（該当のテンプレートがない場合は作成してください）
+- 重複があると煩雑になるので、関連 Issue を探して#〇〇と参照を入れてください。
+- assign、tag をつけてください。
+- バグや表示崩れについては、Issue テンプレート`Bug report`で作成してください。
+  - 機能実装やテストで見つけ次第、どんどん作成してください。
+  - 必要であれば、MTG 内で修正対応について議論してください。
+- 作成した Issue を必ず MTG で、いつ対応するのかをチームで決めましょう。
+
 ### PullRequest
 
 **1. プルリクエスト前の作業**
@@ -90,7 +101,7 @@ package に更新がないか、確認するため、 `npm install` コマンド
 
 **3. プルリクエスト作成時**
 
-- `PullRequestTemplate`を使ってください。
+- `PullRequestTemplate`を使ってください。（テンプレートがない場合は作成、テンプレートの内容を変更したい場合は編集してください）
 - 作ったブランチから main ブランチへマージするプルリクを作ってください。
 - プルリクに issue 番号を紐付けてください。
 - レビュアーに assign つけてください。（複数つけても OK）
