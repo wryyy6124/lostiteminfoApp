@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Contact.module.css";
 
-const Login = () => {
+const Contact = () => {
   return (
     <>
       <header className={`w-full`}>
@@ -21,7 +21,8 @@ const Login = () => {
         </div>
       </header>
 
-      <main className="w-full mb-20">
+
+      <main className="w-full">
         <h2
           className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
         >
@@ -80,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Contact;
