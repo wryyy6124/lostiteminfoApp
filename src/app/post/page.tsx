@@ -68,7 +68,7 @@ const PostPage = () => {
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col">
         <div className="mb-6">
-          <label htmlFor="title" className="block text-sm font-bold text-black">落し物:</label>
+          <label htmlFor="title" className="block text-sm font-bold text-black text-left">落し物:</label>
           <input
             type="text"
             id="title"
@@ -80,7 +80,7 @@ const PostPage = () => {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="description" className="block text-sm font-bold text-black">落し物詳細:</label>
+          <label htmlFor="description" className="block text-sm font-bold text-black text-left">落し物詳細:</label>
           <textarea
             id="description"
             placeholder='落し物の詳細を入力してください'
@@ -92,7 +92,7 @@ const PostPage = () => {
         </div>
         <div className="flex space-x-4 mb-6">
           <div className="flex-1">
-            <label htmlFor="date" className="block text-sm font-bold text-black">発見日:</label>
+            <label htmlFor="date" className="block text-sm font-bold text-black text-left">発見日:</label>
             <input
               type="date"
               id="date"
@@ -103,7 +103,7 @@ const PostPage = () => {
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="time" className="block text-sm font-bold text-black">発見時間:</label>
+            <label htmlFor="time" className="block text-sm font-bold text-black text-left">発見時間:</label>
             <input
               type="time"
               id="time"
@@ -115,7 +115,7 @@ const PostPage = () => {
           </div>
         </div>
         <div className="mb-6">
-          <label htmlFor="location" className="block text-sm font-bold text-black">発見場所:</label>
+          <label htmlFor="location" className="block text-sm font-bold text-black text-left">発見場所:</label>
           <input
             type="text"
             id="location"
@@ -127,7 +127,7 @@ const PostPage = () => {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="additionalInfo" className="block text-sm font-bold text-black">備考欄:</label>
+          <label htmlFor="additionalInfo" className="block text-sm font-bold text-black text-left">備考欄:</label>
           <textarea
             id="additionalInfo"
             placeholder='その他の情報を入力してください'
@@ -137,7 +137,7 @@ const PostPage = () => {
           ></textarea>
         </div>
         <div className="mb-6">
-          <label htmlFor="image" className="block text-sm font-bold text-black mb-2">画像などのファイルをアップロード:</label>
+          <label htmlFor="image" className="block text-sm font-bold text-black mb-2 text-left">画像などのファイルをアップロード:</label>
           <input
             type="file"
             id="image"
@@ -145,7 +145,7 @@ const PostPage = () => {
             onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
             className="mt-4"
           />
-          <p className='block mt-3 text-xs text-red-500'>不適切な画像のアップロードは禁止されています</p>
+          <p className="block mt-3 text-xs text-red-500 text-left">不適切な画像のアップロードは禁止されています</p>
         </div>
         <button
           type="submit"
