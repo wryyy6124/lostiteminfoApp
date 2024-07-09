@@ -1,5 +1,6 @@
 .contents_h2 {
   box-shadow: 0 4px 2px rgb(230, 230, 230, 0.4);
+  color: rgb(255, 55, 55);
 }
 
 .user_list > li {
