@@ -1,0 +1,19 @@
+.contents_h2 {
+  box-shadow: 0 4px 2px rgb(230, 230, 230, 0.4);
+}
+
+.item_list > li {
+  gap: 1rem 1.5rem;
+}
+
+.item_list > li:last-of-type {
+  border: none;
+}
+
+.rotate345 {
+  transform: rotate(345deg);
+}
+
+.footer {
+  box-shadow: 0 -4px 12px rgb(230, 230, 230, 0.7);
+}
