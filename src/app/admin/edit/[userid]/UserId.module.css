@@ -1,0 +1,11 @@
+.contents_h2 {
+    box-shadow: 0 4px 2px rgb(230, 230, 230, 0.4);
+  }
+
+.select:invalid{
+    color: #979797;
+}
+
+.footer {
+    box-shadow: 0 -4px 12px rgb(230, 230, 230, 0.7);
+  }
