@@ -33,11 +33,12 @@ const EditUser = () => {
           <div className="w-full max-w-3xl mx-auto">
             <form className="w-full" action="#">
               <div className="mb-7">
-                <h3 className="text-sm font-bold mb-1.5">ユーザーID</h3>
+                <label className="text-sm font-bold mb-1.5" htmlFor="id">ユーザーID</label>
                 <div className="mt-1 mb-2">
                   <input
                     type="text"
                     className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="id"
                     name="id"
                     placeholder="例: abcde123"
                   />
@@ -45,11 +46,12 @@ const EditUser = () => {
               </div>
 
               <div className="mb-7">
-                <h3 className="text-sm font-bold mb-1.5">メールアドレス</h3>
+                <label className="text-sm font-bold mb-1.5" htmlFor="email">メールアドレス</label>
                 <div className="mt-1 mb-2">
                   <input
                     type="text"
                     className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="email"
                     name="email"
                     placeholder="例: abcde@gmail.com"
                   />
@@ -57,10 +59,12 @@ const EditUser = () => {
               </div>
 
               <div className="mb-7">
-                <h3 className="text-sm font-bold mb-1.5">権限</h3>
+                <label className="text-sm font-bold mb-1.5" htmlFor="role">権限</label>
                 <div className="mt-1 mb-2">
                   <div className="w-80">
                     <select
+                      id="role"
+                      name="role"
                       required
                       className={`${styles.select} w-full text-sm p-3 rounded-md border-2 border-solid border-blue-gray-200 focus:border-2`}
                     >
@@ -75,11 +79,12 @@ const EditUser = () => {
               </div>
 
               <div className="mb-7">
-                <h3 className="text-sm font-bold mb-1.5">パスワード</h3>
+                <label className="text-sm font-bold mb-1.5" htmlFor="password">パスワード</label>
                 <div className="mt-1 mb-2">
                   <input
                     type="text"
                     className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="password"
                     name="password"
                     placeholder="例: ab12%&=aet"
                   />
@@ -87,10 +92,11 @@ const EditUser = () => {
               </div>
 
               <div className="mb-14">
-                <h3 className="text-sm font-bold mb-1.5">備考欄</h3>
+                <label className="text-sm font-bold mb-1.5" htmlFor="remarks">備考欄</label>
                 <div className="mt-1 mb-2">
                   <textarea
                     className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="remarks"
                     name="remarks"
                     placeholder="登録理由等を必要に応じて記入ください。"
                   />
