@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Contact.module.css";
+import Link from "next/link";
 
 const Contact = () => {
   return (
@@ -21,47 +22,89 @@ const Contact = () => {
         </div>
       </header>
 
-
       <main className="w-full">
         <h2
           className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
         >
-          <div className="w-full max-w-5xl mx-auto p-4">
-            😥 ID・パスワードを忘れました
-          </div>
+          <div className="w-full max-w-5xl mx-auto p-4">🔑 アカウント情報</div>
         </h2>
         <div className="w-full max-w-5xl mx-auto p-5 mt-5">
-          <div className="w-full max-w-3xl mx-auto pb-3">
+          <div className="w-full max-w-3xl mx-auto pb-5">
             <form className="w-full" action="#">
-              <h3 className="text-sm font-bold mb-1.5">登録メールアドレス</h3>
-              <div className="mt-1 mb-2">
-                <input
-                  type="text"
-                  className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
-                  name="email"
-                  placeholder="ご登録のメールアドレスを入力してください。"
-                />
+              <div>
+                <label
+                  className="text-sm font-bold mb-1.5"
+                  htmlFor="oldPassword"
+                >
+                  旧パスワード
+                </label>
+                <div className="mt-1 mb-2">
+                  <input
+                    type="text"
+                    className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="oldPassword"
+                    name="oldPassword"
+                    placeholder="古いパスワードを入力してください"
+                  />
+                </div>
+                <p className="text-gray-400 text-xs pb-8">
+                  現在のパスワードを入力
+                </p>
               </div>
-              <p className="text-gray-400 text-xs pb-8">
-                例: abcde123@example.com
-              </p>
-              <p className="text-xs sm:text-base pb-12">
-                当アプリの利用申込書へ記入頂いたメールアドレスを入力してください。
-                <br />
-                仮パスワードを発行後、ご登録のメールアドレス宛に送信致します。
-                <br />
-                もし登録したアドレス自体失念をしてしまった場合、管理者へ直接お問い合わせください。
-              </p>
+
+              <div>
+                <label
+                  className="text-sm font-bold mb-1.5"
+                  htmlFor="newPassword"
+                >
+                  新パスワード
+                </label>
+                <div className="mt-1 mb-2">
+                  <input
+                    type="text"
+                    className="w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200"
+                    id="newPassword"
+                    name="newPassword"
+                    placeholder="新しいパスワードを入力してください"
+                  />
+                </div>
+                <p className="text-gray-400 text-xs pb-8">
+                  変更後のパスワードを入力
+                </p>
+              </div>
+
               {/* ボタンのリンク先やクリック時用のCSSなどはまだ未設定です*/}
               <div className="flex justify-center">
                 <button
                   type="submit"
                   className="block w-5/6 md:w-1/2 rounded-lg bg-gray-950 p-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700"
                 >
-                  パスワードを再発行する
+                  パスワードを変更する
                 </button>
               </div>
             </form>
+          </div>
+
+          <div className={`w-full max-w-3xl mx-auto mt-6 px-6`}>
+            <h3 className={`text-lg font-bold mb-2`}>★管理者権限ページ</h3>
+            <ul className={`text-sm font-bold text-red-500 pl-4`}>
+              <li className={`mb-3`}>
+                {/* 遷移先で現状supabaseのエラーがでますが、後に解消予定です。 */}
+                <Link className={`ml-1`} href="/post">
+                  📝 新規スレッドを投稿する
+                </Link>
+              </li>
+              <li className={`mb-3`}>
+                <Link className={`ml-1`} href="/admin/adduser">
+                  🙋 新規ユーザーを追加する
+                </Link>
+              </li>
+              <li>
+                <Link className={`ml-1`} href="/admin/edit">
+                  🗒️ 登録済みユーザーのリスト
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </main>
