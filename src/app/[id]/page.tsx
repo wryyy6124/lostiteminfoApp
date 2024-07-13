@@ -19,6 +19,7 @@ export default function detailPage() {
           </h1>
         </div>
       </header>
+
       <main className={`w-full pb-20`}>
         <div className={`w-full`}>
           <h2
