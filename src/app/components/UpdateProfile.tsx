@@ -125,6 +125,7 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">ユーザーID:</label>
           <input
+            title="User ID"
             type="text"
             value={userId}
             readOnly

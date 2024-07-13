@@ -3,9 +3,7 @@
 import React, { useState } from 'react';
 import CreateUser from '../components/CreateUser';
 import DeleteUser from '../components/DeleteUser';
-import GetUserById from '../components/GetUserById';
 import ListUsers from '../components/ListUsers';
-//import UpdateUserById from '../components/UpdateUserById';
 import UpdateProfile from '../components/UpdateProfile';
 
 export default function AdminPage() {
@@ -23,12 +21,8 @@ export default function AdminPage() {
         return <CreateUser />;
       case 'deleteUser':
         return <DeleteUser userId={selectedUserId || ''} onDelete={() => setView('listUsers')} />;
-      case 'getUserById':
-        return <GetUserById />;
       case 'listUsers':
         return <ListUsers onEdit={handleEdit} />;
-      // case 'updateUserById':
-      //   return <UpdateUserById />;
       case 'updateProfile':
         return selectedUserId ? <UpdateProfile userId={selectedUserId} /> : <ListUsers onEdit={handleEdit} />;
       default:

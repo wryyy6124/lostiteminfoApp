@@ -10,7 +10,7 @@ export default async function AuthButtonServer() {
 
   let posts = [];
   if (session) {
-    const { data, error } = await supabase.from('Posts').select('*');
+    const { data, error } = await supabase.from('post').select('*');
     if (error) {
       console.error("Error fetching posts:", error);
     } else {

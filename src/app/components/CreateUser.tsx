@@ -64,18 +64,6 @@ export default function CreateUser() {
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-center mb-6">新規ユーザーを追加する</h1>
       <form onSubmit={handleSubmit}>
-        {/* <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">ユーザーID:</label>
-          <input
-            type="text"
-            placeholder="例: abcde123"
-            value={''}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded"
-            readOnly
-            required
-          />
-        </div> */}
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">メールアドレス:</label>
           <input

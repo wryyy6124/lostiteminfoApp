@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
 import { supabaseAdmin } from '../../../lib/supabaseAdmin';
 
 const supabase = supabaseAdmin;
