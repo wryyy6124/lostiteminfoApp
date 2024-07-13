@@ -63,10 +63,10 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
         {selectedUsers.map((user) => (
           <li key={user.id} className="bg-white p-4 rounded shadow flex justify-between items-center">
             <div>
-              <p className="font-semibold">User ID: {user.id}</p>
-              <p>Email: {user.email}</p>
-              <p>Role: {remarks[user.id]?.role || 'N/A'}</p>
-              <p>Remarks: {remarks[user.id]?.remarks || 'N/A'}</p>
+              <p className="font-semibold">ユーザーID: {user.id}</p>
+              <p>メールアドレス: {user.email}</p>
+              <p>権限: {remarks[user.id]?.role || 'N/A'}</p>
+              {remarks[user.id]?.remarks && <p>コメント: {remarks[user.id].remarks}</p>}
             </div>
             <div className="flex space-x-2">
               <button
