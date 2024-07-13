@@ -19,7 +19,7 @@ export default function detailPage() {
           </h1>
         </div>
       </header>
-      <main className={`w-full`}>
+      <main className={`w-full pb-20`}>
         <div className={`w-full`}>
           <h2
             className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
@@ -61,7 +61,7 @@ export default function detailPage() {
 
               {/* 以下は「画像がアップロードされている場合」に出現する */}
               <div
-                className={`w-full mx-auto max-w-xl max-w-lg bg-gray-300 text-center text-lg flex flex-col justify-center items-center mt-6 py-4`}
+                className={`w-full mx-auto max-w-xl bg-gray-300 text-center text-lg flex flex-col justify-center items-center mt-6 py-4`}
               >
                 画像
                 <br />
@@ -83,7 +83,7 @@ export default function detailPage() {
                 </div>
               </div>
             </div>
-            <div className={`w-full max-w-3xl mx-auto mt-6 px-6 pb-20`}>
+            <div className={`w-full max-w-3xl mx-auto mt-6 px-6`}>
               <h3 className={`text-lg font-bold mb-2`}>★管理者用設定</h3>
               <ul className={`text-sm pl-4 pb-20`}>
                 <li className={`mb-2`}>
