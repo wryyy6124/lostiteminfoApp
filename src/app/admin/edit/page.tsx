@@ -19,7 +19,7 @@ export default function EditListPage() {
           </h1>
         </div>
       </header>
-      <main className={`w-full`}>
+      <main className={`w-full pb-20`}>
         <div className={`w-full`}>
           <h2
             className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
