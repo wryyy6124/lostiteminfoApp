@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
+import { useState, FormEvent, useEffect } from 'react';
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/navigation';
+import useAuth from '../useAuth';
+import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
 
 export default function CreateUser() {
   const [email, setEmail] = useState('');
@@ -10,9 +13,26 @@ export default function CreateUser() {
   const [role, setRole] = useState('user');
   const [remarksColumn, setRemarksColumn] = useState('');
   const [temporaryPassword, setTemporaryPassword] = useState('');
+  const [session, setSession] = useState<Session | null>(null);
+  
+  const router = useRouter();
+  const supabaseClient = createClientComponentClient();
 
-  const session = useSession();
-  const currentUser = useUser();
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      setSession(session);
+      console.log('Session:', session);
+    };
+  
+    getSession();
+  }, [supabaseClient.auth]);
+
+  useAuth();
+
+  const navigateToAdmin = () => {
+    router.push('/admin');
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -35,7 +55,7 @@ export default function CreateUser() {
             role,
             remarks_column: remarksColumn,
             created_at: new Date(),
-            created_by: currentUser?.id || '',
+            created_by: session?.user?.id || '',
           });
 
         alert('User created successfully');
@@ -63,6 +83,9 @@ export default function CreateUser() {
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-center mb-6">新規ユーザーを追加する</h1>
+      <div className="mt-8 mb-8">
+        <p>登録者 ID: {session?.user?.id}</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">メールアドレス:</label>

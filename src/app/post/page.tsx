@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import useAuth from '../useAuth';
-import AuthButtonClient from '../components/AuthButtonClient';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -11,7 +10,6 @@ export const dynamic = 'force-dynamic';
 
 export default function Page() {
   const [session, setSession] = useState<Session | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
@@ -32,10 +30,6 @@ export default function Page() {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
-      if (session) {
-        const { data: posts } = await supabase.from('posts').select('*');
-        setPosts(posts || []);
-      }
     };
 
     getSession();
@@ -139,7 +133,7 @@ export default function Page() {
       {!session ? (
         <button
           onClick={signInWithGoogle}
-          className="mt-8 px-10 py-6 bg-blue-600 text-white text-2xl font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          className="mt-8 px-10 py-6 bg-gray-600 text-white text-2xl font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
         >
           Googleでサインイン
         </button>
@@ -232,13 +226,15 @@ export default function Page() {
               <p className="block mt-3 text-xs text-red-500 text-left">不適切な画像のアップロードは禁止されています</p>
               <p className="block mt-3 text-xs text-black text-left">ファイル名は半角にしてください</p>
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`p-2 w-1/2 mt-12 bg-black text-white rounded-md mx-auto ${loading ? 'bg-gray-700' : 'hover:bg-gray-900'}`}
-            >
-              {loading ? '投稿中...' : '投稿する'}
-            </button>
+            <div className="flex align-items: center justify-center">
+              <button
+                type="submit"
+                disabled={loading}
+                className={`p-2 w-1/2 mt-12 bg-black text-white rounded-md mx-auto ${loading ? 'bg-gray-700' : 'hover:bg-gray-900'}`}
+              >
+                {loading ? '投稿中...' : '投稿する'}
+              </button>
+            </div>
           </form>
           {error && <p className="text-red-500 mt-10">{error}</p>}
           {success && <p className="text-green-500 mt-10">{success}</p>}

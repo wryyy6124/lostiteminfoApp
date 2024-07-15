@@ -56,13 +56,13 @@ export default function Page() {
           <div className="flex justify-center mt-20">
             <button
               onClick={navigateToAdmin}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 mr-4"
+              className="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 mr-6"
             >
               Go to Admin Page
             </button>
             <button
               onClick={navigateToPost}
-              className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+              className="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 ml-6"
             >
               Go to Post Page
             </button>
