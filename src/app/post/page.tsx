@@ -1,19 +1,63 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import supabase from '../../../lib/supabase';
+import { useState, useEffect } from 'react';
+import useAuth from '../useAuth';
+import AuthButtonClient from '../components/AuthButtonClient';
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-const PostPage = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [location, setLocation] = useState('');
-  const [additionalInfo, setAdditionalInfo] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+export const dynamic = 'force-dynamic';
+
+export default function Page() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [posts, setPosts] = useState<any[]>([]);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+
+  const [file, setFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const [lostitemName, setLostitemName] = useState('');
+  const [findDate, setFindDate] = useState('');
+  const [findTime, setFindTime] = useState('');
+  const [findPlace, setFindPlace] = useState('');
+  const [comment, setComment] = useState('');
+  const [remarksColumn, setRemarksColumn] = useState('');
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      if (session) {
+        const { data: posts } = await supabase.from('posts').select('*');
+        setPosts(posts || []);
+      }
+    };
+
+    getSession();
+  }, [router, supabase]);
+
+  useAuth();
+
+  const navigateToPost = () => {
+    router.push('/post');
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,34 +65,51 @@ const PostPage = () => {
     setError('');
     setSuccess('');
 
+    let uploadedFilePath = '';
+
     try {
-      // 画像をSupabaseストレージにアップロード
-      let imageUrl = '';
-      if (image) {
+      let fileURL = '';
+      if (file) {
+        const uniqueFileName = `${Date.now()}_${file.name}`;
         const { data, error } = await supabase.storage
-          .from('public_files')
-          .upload(`posts/${Date.now()}_${image.name}`, image);
+          .from('post_files')
+          .upload(`public/${uniqueFileName}`, file);
 
         if (error) {
           throw new Error('画像のアップロードに失敗しました');
         }
 
-        imageUrl = data.path;
+        uploadedFilePath = data.path;
+        fileURL = `https://your-supabase-url.supabase.co/storage/v1/object/public/post_files/${uniqueFileName}`;
       }
 
-      // 投稿データをデータベースに挿入
-      const { error: dbError } = await supabase.from('posts').insert({
-        lostitem_name : title,
-        comment : description,
-        find_date : date,
-        find_time : time,
-        find_place : location,
-        remarks_column : additionalInfo,
-        file_url : imageUrl,
-      });
+      const { data: dbData, error: dbError } = await supabase
+        .from('post')
+        .insert([
+          { 
+            lostitem_name: lostitemName,
+            find_date: findDate,
+            find_time: findTime,
+            find_place: findPlace,
+            comment: comment,
+            file_url: fileURL,
+            remarks_column: remarksColumn,
+            created_at: new Date().toISOString().split('T')[0],
+            created_by: session?.user?.id || ''
+          }
+        ]);
 
       if (dbError) {
-        throw new Error('投稿の作成に失敗しました');
+        console.error('DB Error:', dbError);
+
+        // 画像の削除
+        if (uploadedFilePath) {
+          await supabase.storage
+            .from('post_files')
+            .remove([uploadedFilePath]);
+        }
+
+        throw new Error('データベースへの保存に失敗しました');
       }
 
       setSuccess('投稿が成功しました！');
@@ -59,6 +120,15 @@ const PostPage = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+    if (error) {
+      console.error('Google Sign-in Error:', error.message);
+    }
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
       <div className="text-center mt-10 mb-10">
@@ -66,97 +136,114 @@ const PostPage = () => {
         <p>ヘッダー</p>
         <p>-----------------------------------</p>
       </div>
-      <form onSubmit={handleSubmit} className="flex flex-col">
-        <div className="mb-6">
-          <label htmlFor="title" className="block text-sm font-bold text-black text-left">落し物:</label>
-          <input
-            type="text"
-            id="title"
-            placeholder='落し物を入力してください'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="description" className="block text-sm font-bold text-black text-left">落し物詳細:</label>
-          <textarea
-            id="description"
-            placeholder='落し物の詳細を入力してください'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          ></textarea>
-        </div>
-        <div className="flex space-x-4 mb-6">
-          <div className="flex-1">
-            <label htmlFor="date" className="block text-sm font-bold text-black text-left">発見日:</label>
-            <input
-              type="date"
-              id="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            />
-          </div>
-          <div className="flex-1">
-            <label htmlFor="time" className="block text-sm font-bold text-black text-left">発見時間:</label>
-            <input
-              type="time"
-              id="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            />
-          </div>
-        </div>
-        <div className="mb-6">
-          <label htmlFor="location" className="block text-sm font-bold text-black text-left">発見場所:</label>
-          <input
-            type="text"
-            id="location"
-            placeholder='発見場所を入力してください'
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="additionalInfo" className="block text-sm font-bold text-black text-left">備考欄:</label>
-          <textarea
-            id="additionalInfo"
-            placeholder='その他の情報を入力してください'
-            value={additionalInfo}
-            onChange={(e) => setAdditionalInfo(e.target.value)}
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          ></textarea>
-        </div>
-        <div className="mb-6">
-          <label htmlFor="image" className="block text-sm font-bold text-black mb-2 text-left">画像などのファイルをアップロード:</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
-            className="mt-4"
-          />
-          <p className="block mt-3 text-xs text-red-500 text-left">不適切な画像のアップロードは禁止されています</p>
-        </div>
+      {!session ? (
         <button
-          type="submit"
-          disabled={loading}
-          className={`p-2 w-1/2 mt-12 bg-black text-white rounded-md mx-auto ${loading ? 'bg-gray-700' : 'hover:bg-gray-900'}`}
+          onClick={signInWithGoogle}
+          className="mt-8 px-10 py-6 bg-blue-600 text-white text-2xl font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
         >
-          {loading ? '投稿中...' : '投稿する'}
+          Googleでサインイン
         </button>
-      </form>
-      {error && <p className="text-red-500 mt-10">{error}</p>}
-      {success && <p className="text-green-500 mt-10">{success}</p>}
+      ) : (
+        <>
+          <div>
+            <p>投稿者 ID: {session.user?.id}</p>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="lostitemName" className="block text-sm font-bold text-black text-left">落し物:</label>
+              <input
+                type="text"
+                id="lostitemName"
+                placeholder='落し物を入力してください'
+                value={lostitemName}
+                onChange={(e) => setLostitemName(e.target.value)}
+                required
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="findDate" className="block text-sm font-bold text-black text-left">発見日:</label>
+              <input
+                type="date"
+                id="findDate"
+                value={findDate}
+                onChange={(e) => setFindDate(e.target.value)}
+                required
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="findTime" className="block text-sm font-bold text-black text-left">発見時間:</label>
+              <input
+                type="time"
+                id="findTime"
+                value={findTime}
+                onChange={(e) => setFindTime(e.target.value)}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="findPlace" className="block text-sm font-bold text-black text-left">発見場所:</label>
+              <input
+                type="text"
+                id="findPlace"
+                placeholder='発見場所を入力してください'
+                value={findPlace}
+                onChange={(e) => setFindPlace(e.target.value)}
+                required
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="comment" className="block text-sm font-bold text-black text-left">コメント:</label>
+              <textarea
+                id="comment"
+                placeholder='コメントを入力してください'
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              ></textarea>
+            </div>
+            <div className="mb-6">
+              <label htmlFor="remarksColumn" className="block text-sm font-bold text-black text-left">備考欄:</label>
+              <textarea
+                id="remarksColumn"
+                placeholder='その他の情報を入力してください'
+                value={remarksColumn}
+                onChange={(e) => setRemarksColumn(e.target.value)}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              ></textarea>
+            </div>
+            <div className="mb-6">
+              <label htmlFor="file" className="block text-sm font-bold text-black mb-2 text-left">画像などのファイルをアップロード:</label>
+              <input
+                type="file"
+                id="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="mt-4"
+              />
+              {filePreview && (
+                <div className="mt-4">
+                  <p className="text-sm font-bold text-black text-left">プレビュー:</p>
+                  <Image src={filePreview} alt="プレビュー" width={300} height={300} className="mt-2 max-w-full h-auto" />
+                </div>
+              )}
+              <p className="block mt-3 text-xs text-red-500 text-left">不適切な画像のアップロードは禁止されています</p>
+              <p className="block mt-3 text-xs text-black text-left">ファイル名は半角にしてください</p>
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`p-2 w-1/2 mt-12 bg-black text-white rounded-md mx-auto ${loading ? 'bg-gray-700' : 'hover:bg-gray-900'}`}
+            >
+              {loading ? '投稿中...' : '投稿する'}
+            </button>
+          </form>
+          {error && <p className="text-red-500 mt-10">{error}</p>}
+          {success && <p className="text-green-500 mt-10">{success}</p>}
+        </>
+      )}
       <div className="text-center mt-10 mb-10">
         <p>-----------------------------------</p>
         <p>フッター</p>
@@ -164,6 +251,4 @@ const PostPage = () => {
       </div>
     </div>
   );
-};
-
-export default PostPage;
+}
