@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import useAuth from './useAuth';
-import AuthButtonClient from './components/AuthButtonClient';
+import PostList from './components/PostList';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
   const [session, setSession] = useState<Session | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
@@ -18,55 +19,47 @@ export default function Page() {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
+
       if (session) {
-        const { data: posts } = await supabase.from('posts').select('*');
-        setPosts(posts || []);
+        const { data: profile, error } = await supabase
+          .from('profile')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+          
+        if (error) {
+          console.error('Error fetching profile:', error);
+        } else {
+          setUserRole(profile.role);
+        }
       }
     };
 
     getSession();
-  }, [router, supabase]);
+  }, [supabase]);
 
   useAuth();
 
-  const navigateToAdmin = () => {
-    router.push('/admin');
-  };
-
-  const navigateToPost = () => {
-    router.push('/post');
-  };
-
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-3xl font-bold text-center mb-6">This website is currently being manufactured...</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">おとしものインフォメーション</h1>
+
       {session ? (
         <>
-          <div className="flex justify-between items-center mb-6">
-            <AuthButtonClient initialSession={session} initialPosts={posts} />
-          </div>
-          <div className="flex flex-col"> 
-            {posts.map((post, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-lg shadow">
-                <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-                <p className="text-gray-700">{post.content}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center mt-20">
-            <button
-              onClick={navigateToAdmin}
-              className="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 mr-6"
-            >
-              Go to Admin Page
-            </button>
-            <button
-              onClick={navigateToPost}
-              className="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 ml-6"
-            >
-              Go to Post Page
-            </button>
-          </div>
+        <p className="text-center text-gray-600 mb-4">ログインユーザーID: {session.user.id}</p>
+        <PostList />
+        {userRole === 'admin' && (
+          <nav>
+            <ul className='flex justify-around'>
+              <li className='text-xl font-bold text-center my-10'>
+                <Link href="/admin">アカウント情報ページ</Link>
+              </li>
+              <li className='text-xl font-bold text-center my-10'>
+                <Link href="/post">新規スレッドを投稿する</Link>
+              </li>
+            </ul>
+          </nav>
+        )}
         </>
       ) : (
         <p className="text-center text-gray-600">Loading...</p>

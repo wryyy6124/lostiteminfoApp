@@ -2,7 +2,6 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import { useSession, useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/navigation';
 import useAuth from '../useAuth';
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
