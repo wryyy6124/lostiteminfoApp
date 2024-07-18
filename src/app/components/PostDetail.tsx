@@ -109,6 +109,10 @@ const PostDetail = ({ postId }: PostDetailProps) => {
 
   if (!post) return <p>Loading...</p>;
 
+  // find_timeの秒を取り除き、先頭の0を除去
+  const formattedFindTime = post.find_time ? post.find_time.slice(0, 5).replace(/^0/, '') : '未設定';
+
+
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -128,7 +132,14 @@ const PostDetail = ({ postId }: PostDetailProps) => {
               className="w-full border border-gray-300 rounded p-2"
             />
           ) : (
-            post.lostitem_name
+            <div className='flex justify-between'>
+              {post.lostitem_name}
+              {post.resolved ? (
+                <Image src="/img/true.png" alt="Resolved" width={70} height={70} className="rounded-full inline-block mr-15" />
+              ) : (
+                null
+              )}
+            </div>
           )}
         </h1>
         <div className="mb-4 flex">
@@ -171,7 +182,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
                 className="border border-gray-300 rounded p-2"
               />
             ) : (
-              post.find_time
+              formattedFindTime
             )}
           </p>
         </div>

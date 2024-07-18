@@ -112,6 +112,17 @@ export default function Page() {
       }
 
       setSuccess('投稿が成功しました！');
+
+      // フォームをリセット
+      setLostitemName('');
+      setFindDate('');
+      setFindTime('');
+      setFindPlace('');
+      setComment('');
+      setRemarksColumn('');
+      setFile(null);
+      setFilePreview(null);
+
     } catch (error: any) {
       setError(error.message);
     } finally {

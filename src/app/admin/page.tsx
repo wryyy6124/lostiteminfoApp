@@ -5,7 +5,6 @@ import CreateUser from '../components/CreateUser';
 import DeleteUser from '../components/DeleteUser';
 import ListUsers from '../components/ListUsers';
 import UpdateProfile from '../components/UpdateProfile';
-//import UpdateUserById from '../components/UpdateUserById';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -51,12 +50,6 @@ export default function AdminPage() {
           >
             List Users
           </button>
-          {/* <button */}
-            {/* onClick={() => setView('updateUserById')} */}
-            {/* className={`text-gray-600 px-4 py-2 rounded ${view === 'updateUserById' ? 'bg-gray-200' : 'hover:bg-gray-100'}`} */}
-          {/* > */}
-            {/* Update User By ID */}
-          {/* </button> */}
         </div>
       </nav>
       <div className="container mx-auto p-4">
