@@ -29,10 +29,6 @@ export default function CreateUser() {
 
   useAuth();
 
-  //const navigateToAdmin = () => {
-  //  router.push('/admin');
-  //};
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 

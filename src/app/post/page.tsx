@@ -38,10 +38,6 @@ export default function Page() {
 
   useAuth();
 
-  /*const navigateToPost = () => {
-    router.push('/post');
-  };*/
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -78,6 +74,7 @@ export default function Page() {
         const timestamp = new Date().toISOString();
         fileURL = `https://cxhwsktvngsmxnxfhyaj.supabase.co/storage/v1/object/public/post_files/public/${uniqueFileName}?t=${encodeURIComponent(timestamp)}`;
         console.log('Public URL:', fileURL); // パブリックURLをコンソールに表示
+
       }
 
       const { data: dbData, error: dbError } = await supabase

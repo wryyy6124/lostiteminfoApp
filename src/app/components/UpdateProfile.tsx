@@ -39,10 +39,6 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
 
   useAuth();
 
-  // const navigateToAdmin = () => {
-  // router.push('/admin');
-  // };
-
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.admin.getUserById(userId);

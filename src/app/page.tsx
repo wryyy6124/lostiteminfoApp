@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export default function Page() {
   const [session, setSession] = useState<Session | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+
   const router = useRouter();
   const supabase = createClientComponentClient();
 
