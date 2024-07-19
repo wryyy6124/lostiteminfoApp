@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateUser from '../components/CreateUser';
 import DeleteUser from '../components/DeleteUser';
 import ListUsers from '../components/ListUsers';
@@ -11,10 +11,15 @@ export default function AdminPage() {
   const [view, setView] = useState('listUsers');
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  const handleEdit = (userId: string) => {
+  const handleEdit = (userId: string) => {    
     setSelectedUserId(userId);
     setView('updateProfile');
   };
+
+  useEffect(()=>{
+    console.log(selectedUserId);
+  }
+,[view])
 
   const renderView = () => {
     switch (view) {

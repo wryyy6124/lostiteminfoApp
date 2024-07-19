@@ -65,7 +65,8 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
     };
 
     fetchUsers();
-  }, []);
+    console.log(users);
+  }, [currentPage]);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);

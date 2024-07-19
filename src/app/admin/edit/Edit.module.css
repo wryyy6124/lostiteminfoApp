@@ -7,9 +7,10 @@
   gap: 1rem 1.5rem;
 }
 
-.user_list > li:last-of-type {
+/* ページネーションを実装する場合はない方がベター？ */
+/* .user_list > li:last-of-type {
   border: none;
-}
+} */
 
 .footer {
   box-shadow: 0 -4px 12px rgb(230, 230, 230, 0.7);
