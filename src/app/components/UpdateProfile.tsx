@@ -2,7 +2,10 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/navigation';
+import useAuth from '../useAuth';
 
 type SupabaseUser = {
   id: string;
@@ -19,9 +22,26 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
   const [role, setRole] = useState('user');
   const [remarksColumn, setRemarksColumn] = useState('');
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
-  const session = useSession();
-  const currentUser = useUser();
+  const router = useRouter();
+  const supabaseClient = createClientComponentClient();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      setSession(session);
+      console.log('Session:', session);
+    };
+  
+    getSession();
+  }, [supabaseClient.auth]);
+
+  useAuth();
+
+  const navigateToAdmin = () => {
+    router.push('/admin');
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -70,7 +90,7 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
         .update({
           role,
           updated_at: new Date(),
-          updated_by: currentUser?.id || '',
+          updated_by: session?.user?.id || '',
           remarks_column: remarksColumn,
         })
         .eq('id', userId);
@@ -121,6 +141,9 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white shadow-md rounded">
       <h1 className="text-2xl text-center font-bold mb-4">ユーザー情報を修正する</h1>
+      <div className="mt-8 mb-8">
+        <p>更新者 ID: {session?.user?.id}</p>
+      </div>
       <form onSubmit={handleUpdateProfile}>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">ユーザーID:</label>

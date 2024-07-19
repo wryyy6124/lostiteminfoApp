@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabaseAdmin } from '../../../lib/supabaseAdmin';
+import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
 import DeleteUser from './DeleteUser';
-
-const supabase = supabaseAdmin;
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import useAuth from '../useAuth';
 
 type ListUsersProps = {
   onEdit: (userId: string) => void;
@@ -12,9 +13,26 @@ type ListUsersProps = {
 
 export default function ListUsers({ onEdit }: ListUsersProps) {
   const [users, setUsers] = useState<any[]>([]);
+  const [session, setSession] = useState<Session | null>(null);
   const [remarks, setRemarks] = useState<{ [key: string]: { role: string; remarks: string } }>({});
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 16;
+  
+  const recordsPerPage = 8;
+
+  const router = useRouter();
+  const supabaseClient = createClientComponentClient();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      setSession(session);
+      console.log('Session:', session);
+    };
+  
+    getSession();
+  }, [supabaseClient.auth]);
+
+  useAuth();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -67,7 +85,7 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
             <div>
               <p className="font-semibold">ユーザーID: {user.id}</p>
               <p>メールアドレス: {user.email}</p>
-              <p>権限: {remarks[user.id]?.role || 'N/A'}</p>
+              <p>権限: {remarks[user.id]?.role || '未設定'}</p>
               {remarks[user.id]?.remarks && <p>コメント: {remarks[user.id].remarks}</p>}
             </div>
             <div className="flex space-x-2">
