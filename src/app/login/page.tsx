@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import AuthButtonClient from '../components/AuthButtonClient';
 
 const Login = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -27,7 +26,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {/*<AuthButtonClient initialSession={session} initialPosts={[]} />*/}
+
       <button
         onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}
         className="mt-8 px-10 py-6 bg-gray-600 text-white text-2xl font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg"

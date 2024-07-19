@@ -39,10 +39,6 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
 
   useAuth();
 
-  const navigateToAdmin = () => {
-    router.push('/admin');
-  };
-
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.admin.getUserById(userId);
@@ -54,6 +50,8 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
         const userData = data.user as SupabaseUser;
         setUser(userData);
         setEmail(userData.email || '');
+
+        // プロフィール情報を取得するための修正
         const { data: profileData, error: profileError } = await supabase
           .from('profile')
           .select('role, remarks_column')
@@ -61,7 +59,7 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
           .single();
 
         if (profileError) {
-          console.error('Error fetching profile:', profileError);
+          console.error('Error fetching profile:', profileError.message);
           alert('Profile not found');
         } else if (profileData) {
           setRole(profileData.role || 'user');

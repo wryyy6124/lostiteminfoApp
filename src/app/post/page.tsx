@@ -5,6 +5,7 @@ import useAuth from '../useAuth';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,10 +37,6 @@ export default function Page() {
   }, [router, supabase]);
 
   useAuth();
-
-  const navigateToPost = () => {
-    router.push('/post');
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -74,19 +71,24 @@ export default function Page() {
         }
 
         uploadedFilePath = data.path;
-        fileURL = `https://your-supabase-url.supabase.co/storage/v1/object/public/post_files/${uniqueFileName}`;
+        const timestamp = new Date().toISOString();
+        fileURL = `https://cxhwsktvngsmxnxfhyaj.supabase.co/storage/v1/object/public/post_files/public/${uniqueFileName}?t=${encodeURIComponent(timestamp)}`;
+        console.log('Public URL:', fileURL); // パブリックURLをコンソールに表示
+
       }
 
       const { data: dbData, error: dbError } = await supabase
         .from('post')
         .insert([
-          { 
+          {
             lostitem_name: lostitemName,
             find_date: findDate,
-            find_time: findTime,
+            find_time: findTime || null,  // ここで空の時間をnullとして扱う
             find_place: findPlace,
             comment: comment,
             file_url: fileURL,
+            resolved: false,
+            hidden: false,
             remarks_column: remarksColumn,
             created_at: new Date().toISOString().split('T')[0],
             created_by: session?.user?.id || ''
@@ -107,6 +109,17 @@ export default function Page() {
       }
 
       setSuccess('投稿が成功しました！');
+
+      // フォームをリセット
+      setLostitemName('');
+      setFindDate('');
+      setFindTime('');
+      setFindPlace('');
+      setComment('');
+      setRemarksColumn('');
+      setFile(null);
+      setFilePreview(null);
+
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -125,15 +138,14 @@ export default function Page() {
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
+      <Link className="text-xl mb-4" href={'/'}>To Home Page</Link>
       <div className="text-center mt-10 mb-10">
-        <p>-----------------------------------</p>
-        <p>ヘッダー</p>
-        <p>-----------------------------------</p>
+        <p>        </p>
       </div>
       {!session ? (
         <button
           onClick={signInWithGoogle}
-          className="mt-8 px-10 py-6 bg-gray-600 text-white text-2xl font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          className="mt-8 px-10 py-6 bg-gray-600 text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
         >
           Googleでサインイン
         </button>
@@ -143,7 +155,7 @@ export default function Page() {
             <p>投稿者 ID: {session.user?.id}</p>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="mb-6">
+            <div className="mt-10 mb-6">
               <label htmlFor="lostitemName" className="block text-sm font-bold text-black text-left">落し物:</label>
               <input
                 type="text"
@@ -209,7 +221,7 @@ export default function Page() {
               ></textarea>
             </div>
             <div className="mb-6">
-              <label htmlFor="file" className="block text-sm font-bold text-black mb-2 text-left">画像などのファイルをアップロード:</label>
+              <label htmlFor="file" className="block text-sm font-bold text-black mb-2 text-left">画像ファイルをアップロード:</label>
               <input
                 type="file"
                 id="file"
@@ -241,9 +253,7 @@ export default function Page() {
         </>
       )}
       <div className="text-center mt-10 mb-10">
-        <p>-----------------------------------</p>
-        <p>フッター</p>
-        <p>-----------------------------------</p>
+        <p>        </p>
       </div>
     </div>
   );
