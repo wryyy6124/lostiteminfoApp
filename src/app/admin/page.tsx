@@ -5,6 +5,7 @@ import CreateUser from '../components/CreateUser';
 import DeleteUser from '../components/DeleteUser';
 import ListUsers from '../components/ListUsers';
 import UpdateProfile from '../components/UpdateProfile';
+import Link from 'next/link';
 
 export default function AdminPage() {
   const [view, setView] = useState('listUsers');
@@ -25,6 +26,8 @@ export default function AdminPage() {
         return <ListUsers onEdit={handleEdit} />;
       case 'updateProfile':
         return selectedUserId ? <UpdateProfile userId={selectedUserId} /> : <ListUsers onEdit={handleEdit} />;
+      case 'updateUserById':
+       // return <UpdateUserById />;
       default:
         return <ListUsers onEdit={handleEdit} />;
     }
@@ -33,25 +36,20 @@ export default function AdminPage() {
   return (
     <div className="mx-auto p-6 bg-white rounded-lg shadow-md">
       <nav className="p-4">
+        <Link className="text-xl mb-4" href={'/'}>To Home Page</Link>
         <div className="container text-s mx-auto flex justify-around">
-          <button 
-            onClick={() => setView('createUser')} 
+          <button
+            onClick={() => setView('createUser')}
             className={`text-gray-600 px-4 py-2 rounded ${view === 'createUser' ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
           >
             Create User
           </button>
-          <button 
-            onClick={() => setView('listUsers')} 
+          <button
+            onClick={() => setView('listUsers')}
             className={`text-gray-600 px-4 py-2 rounded ${view === 'listUsers' ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
           >
             List Users
           </button>
-          {/* <button 
-            onClick={() => setView('updateProfile')} 
-            className={`text-gray-600 px-4 py-2 rounded ${view === 'updateProfile' ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
-          >
-            Update Profile
-          </button>  */}
         </div>
       </nav>
       <div className="container mx-auto p-4">
