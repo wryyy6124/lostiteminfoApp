@@ -1,19 +1,36 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { supabaseAdmin } from "../../../../lib/supabaseAdmin";
+import { supabaseAdmin as supabase} from "../../../../lib/supabaseAdmin";
+import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
+import useAuth from '@/app/useAuth';
+import { UUID } from "crypto";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./Edit.module.css";
-import { UUID } from "crypto";
-
-const supabase = supabaseAdmin;
 
 export default function EditListPage() {
   const router = useRouter();
   const [users, setUsers] = useState<any[]>([]);
+  const [session, setSession] = useState<Session | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   // const [remarks, setRemarks] = useState<{ [key: string]: { role: string; remarks: string } }>({});
 
+  // アドミンユーザ以外は/loginへ遷移
+  const supabaseClient = createClientComponentClient();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      setSession(session);
+      console.log('Session:', session);
+    };
+  
+    getSession();
+  }, [supabaseClient.auth]);
+
+  useAuth();
+
+  // ユーザー一覧情報をsupabaseより取得
   useEffect(() => {
     const fetchUsers = async () => {
       const { data, error } = await supabase.auth.admin.listUsers();
@@ -42,10 +59,7 @@ export default function EditListPage() {
     fetchUsers();
   }, []);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
+// ユーザーをsupabaseで削除、画面表示も更新
   const deleteUser = async (userId: UUID) => {
     try {
       const { error } = await supabase.auth.admin.deleteUser(userId);
@@ -71,6 +85,9 @@ export default function EditListPage() {
   const startIndex = (currentPage - 1) * recordsPerPage;
   const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
   const totalPages = Math.ceil(users.length / recordsPerPage);
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <>
@@ -172,4 +189,4 @@ export default function EditListPage() {
       </footer>
     </>
   );
-}
+};
