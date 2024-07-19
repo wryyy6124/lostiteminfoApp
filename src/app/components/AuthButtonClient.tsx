@@ -45,11 +45,10 @@ const AuthButtonClient = ({ initialSession, initialPosts }: { initialSession: Se
     <>
       {session ? (
         <>
-          <button onClick={handleSignOut}>ログアウト</button>
-          {/* <pre>{JSON.stringify(posts, null, 2)}</pre> */}
+          <button className="px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg hover:bg-gray-700 mt-12 mr-6" onClick={handleSignOut}>ログアウト</button>
         </>
       ) : (
-        <button onClick={handleSignIn}>サインイン</button>
+        <button className="px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg hover:bg-gray-700 mt-12 mr-6" onClick={handleSignIn}>サインイン</button>
       )}
     </>
   );
