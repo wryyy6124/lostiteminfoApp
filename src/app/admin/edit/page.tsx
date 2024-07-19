@@ -12,6 +12,7 @@ export default function EditListPage() {
   const router = useRouter();
   const [users, setUsers] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  // const [remarks, setRemarks] = useState<{ [key: string]: { role: string; remarks: string } }>({});
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,6 +23,21 @@ export default function EditListPage() {
       } else {
         setUsers(data.users);
       }
+
+    //   const { data: profileData, error: profileError } = await supabase
+    //   .from('profile')
+    //   .select('id, role, remarks_column')
+    //   .order('created_at', { ascending: false }); // created_atで降順に並び替え
+
+    // if (profileError) {
+    //   console.error('Error fetching profiles:', profileError);
+    // } else if (profileData) {
+    //   const remarksMap: { [key: string]: { role: string; remarks: string } } = {};
+    //   profileData.forEach((profile: { id: string; role: string | null; remarks_column: string | null }) => {
+    //     remarksMap[profile.id] = { role: profile.role ?? '未設定', remarks: profile.remarks_column ?? '' };
+    //   });
+    //   setRemarks(remarksMap);
+    // }
     };
     fetchUsers();
   }, []);
@@ -98,7 +114,7 @@ export default function EditListPage() {
                       <p className={`text-sm text-slate-800 font-bold`}>
                         {user.email}
                       </p>
-                      {/* 確認用。マージ前に消す。 */}
+                      {/* 確認用。マージ前に消す予定です。 */}
                       <p className={`text-sm text-slate-800 font-bold`}>
                         {user.id}
                       </p>
