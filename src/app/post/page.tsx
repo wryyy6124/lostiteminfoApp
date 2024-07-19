@@ -38,10 +38,6 @@ export default function Page() {
 
   useAuth();
 
-  /*const navigateToPost = () => {
-    router.push('/post');
-  };*/
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {

@@ -1,4 +1,4 @@
-'use client'; // クライアントコンポーネントとして扱うために追加
+'use client';
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';

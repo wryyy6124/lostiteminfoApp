@@ -1,3 +1,5 @@
+//メール認証用のログイン画面
+
 import React from "react";
 import styles from "./Login.module.css";
 

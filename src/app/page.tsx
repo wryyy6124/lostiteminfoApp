@@ -26,7 +26,7 @@ export default function Page() {
           .select('role')
           .eq('id', session.user.id)
           .single();
-          
+
         if (error) {
           console.error('Error fetching profile:', error);
         } else {
@@ -43,7 +43,6 @@ export default function Page() {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-3xl font-bold text-center mb-6">おとしものインフォメーション</h1>
-
       {session ? (
         <>
         <p className="text-center text-gray-600 mb-4">ログインユーザーID: {session.user.id}</p>

@@ -3,7 +3,6 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import { useSession, useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/navigation';
 import useAuth from '../useAuth';
 
@@ -33,15 +32,11 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
       setSession(session);
       console.log('Session:', session);
     };
-  
+
     getSession();
   }, [supabaseClient.auth]);
 
   useAuth();
-
-  // const navigateToAdmin = () => {
-  // router.push('/admin');
-  // };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -103,10 +98,10 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
 
       alert('Profile updated successfully');
 
-      setEmail(''); // フォームをリセット
-      setTemporaryPassword(''); // フォームをリセット
-      setRole('user'); // フォームをリセット
-      setRemarksColumn(''); // フォームをリセット
+      setEmail('');
+      setTemporaryPassword('');
+      setRole('user');
+      setRemarksColumn('');
 
     } catch (error) {
       if (error instanceof Error) {
