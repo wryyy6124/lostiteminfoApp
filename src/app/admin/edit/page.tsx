@@ -1,6 +1,77 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import { supabaseAdmin } from "../../../../lib/supabaseAdmin";
+import DeleteUser from "@/app/components/DeleteUser";
+import ListUsers from "@/app/components/ListUsers";
+// リンク系どっちか消す
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import styles from "./Edit.module.css";
 
+const supabase = supabaseAdmin;
+
 export default function EditListPage() {
+  const router = useRouter();
+
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [users, setUsers] = useState<any[]>([]);
+  const [remarks, setRemarks] = useState<{
+    [key: string]: { role: string; remarks: string };
+  }>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 16;
+
+  const handleEdit = (userId: string) => {
+    setSelectedUserId(userId);
+    router.push("/#");
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const { data, error } = await supabase.auth.admin.listUsers();
+
+      if (error) {
+        alert(`Failed to list users: ${error.message}`);
+      } else {
+        setUsers(data.users);
+      }
+
+      const { data: profileData, error: profileError } = await supabase
+        .from("profile")
+        .select("id, role, remarks_column");
+
+      if (profileError) {
+        console.error("Error fetching profiles:", profileError);
+      } else if (profileData) {
+        const remarksMap: { [key: string]: { role: string; remarks: string } } =
+          {};
+        profileData.forEach(
+          (profile: { id: string; role: string; remarks_column: string }) => {
+            remarksMap[profile.id] = {
+              role: profile.role,
+              remarks: profile.remarks_column,
+            };
+          }
+        );
+        setRemarks(remarksMap);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleDelete = (userId: string) => {
+    setUsers(users.filter((user) => user.id !== userId));
+  };
+
+  const startIndex = (currentPage - 1) * recordsPerPage;
+  const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
+  const totalPages = Math.ceil(users.length / recordsPerPage);
+
   return (
     <>
       <header className={`w-full`}>
@@ -34,216 +105,30 @@ export default function EditListPage() {
                 登録済みユーザー一覧
               </h3>
               <ol className={`w-full max-w-3xl mx-auto ${styles.user_list}`}>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
-                <li
-                  className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                >
-                  <div className={`flex-auto`}>
-                    <p className={`text-sm text-slate-800 font-bold`}>
-                      abce123
-                    </p>
-                  </div>
-                  <div className={`flex-none flex flex-row gap-x-2`}>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      修正
-                    </button>
-                    <button
-                      className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </li>
+                {selectedUsers.map((user) => (
+                  <li
+                    key={user.id}
+                    className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
+                  >
+                    <div className={`flex-auto`}>
+                      <p className={`text-sm text-slate-800 font-bold`}>
+                        {user.email}
+                      </p>
+                    </div>
+                    <div className={`flex-none flex flex-row gap-x-2`}>
+                      <button
+                        className={`rounded-md bg-black text-white text-xs px-4 py-3`}
+                      >
+                        修正
+                      </button>
+                      <button
+                        className={`rounded-md bg-black text-white text-xs px-4 py-3`}
+                      >
+                        削除
+                      </button>
+                    </div>
+                  </li>
+                ))}
               </ol>
             </div>
           </div>

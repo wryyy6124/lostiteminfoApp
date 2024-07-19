@@ -24,6 +24,7 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
         alert(`Failed to list users: ${error.message}`);
       } else {
         setUsers(data.users);
+        
       }
 
       const { data: profileData, error: profileError } = await supabase
@@ -42,7 +43,8 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
     };
 
     fetchUsers();
-  }, []);
+    console.log(users);
+  }, [currentPage]);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
