@@ -18,7 +18,6 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
   const [remarks, setRemarks] = useState<{ [key: string]: { role: string; remarks: string } }>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string>('');
-
   const recordsPerPage = 8;
 
   const router = useRouter();
@@ -30,7 +29,6 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
       setSession(session);
       console.log('Session:', session);
     };
-
     getSession();
   }, [supabaseClient.auth]);
 

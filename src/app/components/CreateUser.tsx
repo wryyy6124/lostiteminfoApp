@@ -23,7 +23,6 @@ export default function CreateUser() {
       setSession(session);
       console.log('Session:', session);
     };
-
     getSession();
   }, [supabaseClient.auth]);
 

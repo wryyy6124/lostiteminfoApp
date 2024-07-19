@@ -26,7 +26,6 @@ export default function Page() {
           .select('role')
           .eq('id', session.user.id)
           .single();
-
         if (error) {
           console.error('Error fetching profile:', error);
         } else {

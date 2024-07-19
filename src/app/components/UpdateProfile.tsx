@@ -32,7 +32,6 @@ export default function UpdateProfile({ userId }: UpdateProfileProps) {
       setSession(session);
       console.log('Session:', session);
     };
-
     getSession();
   }, [supabaseClient.auth]);
 
