@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import useAuth from '../useAuth';
 
@@ -18,6 +18,7 @@ const PostList = () => {
 
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const getSession = async () => {
@@ -38,12 +39,23 @@ const PostList = () => {
       }
     };
 
+    // URLパラメータから検索クエリを取得
+    const searchQueryParam = searchParams.get('search');
+    if (searchQueryParam) {
+      setSearchQuery(searchQueryParam);
+    }
+
     getSession();
-  }, [supabase]);
+  }, [supabase, searchParams]);
 
   useAuth();
 
   const navigateToDetail = (postId: string) => {
+    // 現在の検索クエリをURLパラメータに保存
+    const url = new URL(window.location.href);
+    url.searchParams.set('search', searchQuery);
+    history.replaceState(null, '', url.toString());
+
     router.push(`/post/${postId}`);
   };
 
@@ -56,6 +68,7 @@ const PostList = () => {
       return post.lostitem_name.toLowerCase().includes(searchQueryLower) || dateMatch || resolvedMatch;
     });
     setFilteredPosts(filtered);
+    setCurrentPage(1); // 検索クエリが変更されたときにページをリセット
   }, [searchQuery, posts]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
