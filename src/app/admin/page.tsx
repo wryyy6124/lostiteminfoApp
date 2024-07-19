@@ -10,8 +10,7 @@ export default function AdminPage() {
   const [view, setView] = useState('listUsers');
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  const handleEdit = (userId: string) => {
-    
+  const handleEdit = (userId: string) => {    
     setSelectedUserId(userId);
     setView('updateProfile');
   };

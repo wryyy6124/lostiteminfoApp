@@ -1,30 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { supabaseAdmin } from "../../../../lib/supabaseAdmin";
-import DeleteUser from "@/app/components/DeleteUser";
-import ListUsers from "@/app/components/ListUsers";
-// リンク系どっちか消す
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./Edit.module.css";
+import { UUID } from "crypto";
 
 const supabase = supabaseAdmin;
 
 export default function EditListPage() {
   const router = useRouter();
-
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [users, setUsers] = useState<any[]>([]);
-  const [remarks, setRemarks] = useState<{
-    [key: string]: { role: string; remarks: string };
-  }>({});
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 16;
-
-  const handleEdit = (userId: string) => {
-    setSelectedUserId(userId);
-    router.push("/#");
-  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -35,28 +22,7 @@ export default function EditListPage() {
       } else {
         setUsers(data.users);
       }
-
-      const { data: profileData, error: profileError } = await supabase
-        .from("profile")
-        .select("id, role, remarks_column");
-
-      if (profileError) {
-        console.error("Error fetching profiles:", profileError);
-      } else if (profileData) {
-        const remarksMap: { [key: string]: { role: string; remarks: string } } =
-          {};
-        profileData.forEach(
-          (profile: { id: string; role: string; remarks_column: string }) => {
-            remarksMap[profile.id] = {
-              role: profile.role,
-              remarks: profile.remarks_column,
-            };
-          }
-        );
-        setRemarks(remarksMap);
-      }
     };
-
     fetchUsers();
   }, []);
 
@@ -64,10 +30,28 @@ export default function EditListPage() {
     setCurrentPage(pageNumber);
   };
 
-  const handleDelete = (userId: string) => {
+  const deleteUser = async (userId: UUID) => {
+    try {
+      const { error } = await supabase.auth.admin.deleteUser(userId);
+
+      if (error) {
+        alert(`Failed to delete user: ${error.message}`);
+      } else {
+        alert("User deleted successfully");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(`Failed to delete user: ${error.message}`);
+      } else {
+        alert("Failed to delete user: An unknown error occurred");
+      }
+    }
+    // 削除されたユーザー以外を再表示
     setUsers(users.filter((user) => user.id !== userId));
   };
 
+  // ページネーション関連
+  const recordsPerPage = 16;
   const startIndex = (currentPage - 1) * recordsPerPage;
   const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
   const totalPages = Math.ceil(users.length / recordsPerPage);
@@ -90,7 +74,7 @@ export default function EditListPage() {
           </h1>
         </div>
       </header>
-      <main className={`w-full pb-20`}>
+      <main className={`w-full pb-24`}>
         <div className={`w-full`}>
           <h2
             className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
@@ -114,15 +98,21 @@ export default function EditListPage() {
                       <p className={`text-sm text-slate-800 font-bold`}>
                         {user.email}
                       </p>
+                      {/* 確認用。マージ前に消す。 */}
+                      <p className={`text-sm text-slate-800 font-bold`}>
+                        {user.id}
+                      </p>
                     </div>
                     <div className={`flex-none flex flex-row gap-x-2`}>
                       <button
                         className={`rounded-md bg-black text-white text-xs px-4 py-3`}
+                        onClick={() => router.push(`edit/${user.id}`)}
                       >
                         修正
                       </button>
                       <button
                         className={`rounded-md bg-black text-white text-xs px-4 py-3`}
+                        onClick={() => deleteUser(user.id)}
                       >
                         削除
                       </button>
@@ -130,6 +120,22 @@ export default function EditListPage() {
                   </li>
                 ))}
               </ol>
+              <div className="mt-4 flex justify-center space-x-2">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    disabled={currentPage === index + 1}
+                    className={`py-2 px-4 rounded ${
+                      currentPage === index + 1
+                        ? "bg-gray-300"
+                        : "bg-white hover:bg-gray-100"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -139,10 +145,12 @@ export default function EditListPage() {
       >
         <ul className={`w-fit mx-auto flex gap-10 py-2`}>
           <li className={`text-center`}>
-            <span className={`text-3xl inline-block place-self-center p-2`}>
-              🚪
-            </span>
-            <span className={`block text-sm font-bold`}>戻る</span>
+            <Link href="/account">
+              <span className={`text-3xl inline-block place-self-center p-2`}>
+                🚪
+              </span>
+              <span className={`block text-sm font-bold`}>戻る</span>
+            </Link>
           </li>
         </ul>
       </footer>
