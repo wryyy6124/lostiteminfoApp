@@ -15,7 +15,7 @@ import styles from "./TopPage.module.css";
 
 export const dynamic = "force-dynamic";
 
-export default function Page() {
+export default function TopPage(): JSX.Element {
   const [session, setSession] = useState<Session | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -97,7 +97,7 @@ export default function Page() {
             <div
               className={`w-full max-w-3xl mx-auto pt-10 px-5 text-center text-lg font-bold text-teal-400`}
             >
-              {userRole}権限用の画面です
+              {userRole}権限用の画面です。
             </div>
           ) : null}
 
@@ -111,7 +111,7 @@ export default function Page() {
         className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
       >
         <ul className={`w-fit mx-auto flex gap-10 py-2`}>
-          <li className={`text-center`}>
+          <li className={`text-center cursor-pointer`}>
             <Link href={`/account`}>
               <span className={`text-3xl inline-block place-self-center p-2`}>
                 📝
@@ -119,7 +119,10 @@ export default function Page() {
               <span className={`block text-sm font-bold`}>アカウント情報</span>
             </Link>
           </li>
-          <li className={`text-center`} onClick={supabaseSignOut}>
+          <li
+            className={`text-center cursor-pointer`}
+            onClick={supabaseSignOut}
+          >
             <span className={`text-3xl inline-block place-self-center p-2`}>
               🔓
             </span>

@@ -26,7 +26,7 @@ const PostList = (): JSX.Element => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
+  useEffect((): void => {
     const getSession = async (): Promise<void> => {
       const {
         data: { session },
@@ -65,6 +65,7 @@ const PostList = (): JSX.Element => {
     (postId: string): void => {
       // 現在の検索クエリをURLパラメータに保存
       const url = new URL(window.location.href);
+
       url.searchParams.set("search", searchQuery);
       history.replaceState(null, "", url.toString());
 
@@ -73,7 +74,7 @@ const PostList = (): JSX.Element => {
     [router, searchQuery]
   );
 
-  useEffect(() => {
+  useEffect((): void => {
     const searchQueryLower = searchQuery.toLowerCase();
 
     const filtered = posts.filter((post) => {
@@ -96,9 +97,7 @@ const PostList = (): JSX.Element => {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return `発見日：${date.getFullYear()}年${
-      date.getMonth() + 1
-    }月${date.getDate()}日`;
+    return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
   };
 
   // ページネーションのためのハンドラを追加
@@ -157,14 +156,14 @@ const PostList = (): JSX.Element => {
                     {post.lostitem_name}
                   </h3>
                   <p className={`text-xs text-slate-800`}>
-                    {formatDate(post.find_date)}
+                    発見日：{formatDate(post.find_date)}
                   </p>
                 </div>
 
                 {/* 詳細画面へ遷移 */}
                 <div className={`flex-none`}>
                   <button
-                    onClick={() => navigateToDetail(post.id)}
+                    onClick={(): void => navigateToDetail(post.id)}
                     className={`rounded-md bg-black text-white text-xs px-6 py-3 font-semibold rounded-lg hover:bg-gray-700`}
                   >
                     詳細
@@ -179,7 +178,7 @@ const PostList = (): JSX.Element => {
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
+                onClick={(): void => handlePageChange(index + 1)}
                 disabled={currentPage === index + 1}
                 className={`hover:transition-all py-2 px-4 rounded ${
                   currentPage === index + 1
