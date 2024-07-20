@@ -74,7 +74,6 @@ export default function Page() {
         const timestamp = new Date().toISOString();
         fileURL = `https://cxhwsktvngsmxnxfhyaj.supabase.co/storage/v1/object/public/post_files/public/${uniqueFileName}?t=${encodeURIComponent(timestamp)}`;
         console.log('Public URL:', fileURL); // パブリックURLをコンソールに表示
-
       }
 
       const { data: dbData, error: dbError } = await supabase

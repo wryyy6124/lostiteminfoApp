@@ -13,7 +13,7 @@ export default function CreateUser() {
   const [remarksColumn, setRemarksColumn] = useState('');
   const [temporaryPassword, setTemporaryPassword] = useState('');
   const [session, setSession] = useState<Session | null>(null);
-  
+
   const router = useRouter();
   const supabaseClient = createClientComponentClient();
 
@@ -23,7 +23,6 @@ export default function CreateUser() {
       setSession(session);
       console.log('Session:', session);
     };
-  
     getSession();
   }, [supabaseClient.auth]);
 
@@ -54,11 +53,11 @@ export default function CreateUser() {
           });
 
         alert('User created successfully');
-        setEmail(''); // フォームをリセット
-        setPassword(''); // フォームをリセット
-        setRole('user'); // フォームをリセット
-        setRemarksColumn(''); // フォームをリセット
-        setTemporaryPassword(''); // 仮パスワードをリセット
+        setEmail('');
+        setPassword('');
+        setRole('user');
+        setRemarksColumn('');
+        setTemporaryPassword('');
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -121,7 +120,6 @@ export default function CreateUser() {
           />
         </div>
         <div className="flex align-items: center justify-center">
-        
           <button
             type="button"
             onClick={generateTemporaryPassword}
@@ -142,7 +140,6 @@ export default function CreateUser() {
         <div className="flex align-items: center justify-center">
           <button type="submit" className="w-1/2 p-3 mt-8 mb-8 bg-black text-white rounded hover:bg-gray-700">ユーザーを追加する</button>
         </div>
-        
       </form>
     </div>
   );
