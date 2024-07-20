@@ -1,33 +1,44 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import useAuth from './useAuth';
-import PostList from './components/PostList';
-import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+import {
+  createClientComponentClient,
+  Session,
+} from "@supabase/auth-helpers-nextjs";
+
+import PostList from "./components/PostList";
+import useAuth from "./useAuth";
+import styles from "./TopPage.module.css";
+
+export const dynamic = "force-dynamic";
 
 export default function Page() {
   const [session, setSession] = useState<Session | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const getSession = async (): Promise<void> => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       setSession(session);
 
       if (session) {
         const { data: profile, error } = await supabase
-          .from('profile')
-          .select('role')
-          .eq('id', session.user.id)
+          .from("profile")
+          .select("role")
+          .eq("id", session.user.id)
           .single();
+
         if (error) {
-          console.error('Error fetching profile:', error);
+          console.error("Error fetching profile:", error);
         } else {
           setUserRole(profile.role);
         }
@@ -37,31 +48,85 @@ export default function Page() {
     getSession();
   }, [supabase]);
 
+  // サインアウト
+  const supabaseSignOut = async (): Promise<void> => {
+    const response = confirm("アプリからログオフしますか？");
+
+    // OKを返答
+    if (response) {
+      await supabase.auth.signOut();
+      router.push(`/login`);
+    }
+  };
+
   useAuth();
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-3xl font-bold text-center mb-6">おとしものインフォメーション</h1>
-      {session ? (
-        <>
-        <p className="text-center text-gray-600 mb-4">ログインユーザーID: {session.user.id}</p>
-        <PostList />
-        {userRole === 'admin' && (
-          <nav>
-            <ul className='flex justify-around'>
-              <li className='text-xl font-bold text-center my-10'>
-                <Link href="/admin">アカウント情報ページ</Link>
-              </li>
-              <li className='text-xl font-bold text-center my-10'>
-                <Link href="/post">新規スレッドを投稿する</Link>
-              </li>
-            </ul>
-          </nav>
-        )}
-        </>
-      ) : (
-        <p className="text-center text-gray-600">Loading...</p>
-      )}
-    </div>
+    <>
+      {/* ヘッダー */}
+      <header className={`w-full`}>
+        <div className={`w-full max-w-5xl mx-auto`}>
+          <h1
+            className={`flex flex-wrap flex-col gap-y-1.5 text-center mx-auto py-5 w-fit`}
+          >
+            <span
+              className={`bg-neutral-100 rounded-e-full rounded-l-full text-3xl inline-block place-self-center p-2`}
+            >
+              📦
+            </span>
+            <span className={`block text-sm font-bold`}>
+              おとしものインフォメーション
+            </span>
+          </h1>
+        </div>
+      </header>
+
+      {/* メインコンテンツ */}
+      <main className={`w-full pb-20`}>
+        <div className={`w-full`}>
+          <h2
+            className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
+          >
+            <div className={`w-full max-w-5xl mx-auto p-4`}>
+              🗒️ おとしものリスト
+            </div>
+          </h2>
+
+          {/* アカウント権限検証用 */}
+          {userRole === "admin" ? (
+            <div
+              className={`w-full max-w-3xl mx-auto pt-10 px-5 text-center text-lg font-bold text-teal-400`}
+            >
+              {userRole}権限用の画面です
+            </div>
+          ) : null}
+
+          {/* 落とし物リストのコンポーネント呼び出し */}
+          <PostList />
+        </div>
+      </main>
+
+      {/* フッター */}
+      <footer
+        className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
+      >
+        <ul className={`w-fit mx-auto flex gap-10 py-2`}>
+          <li className={`text-center`}>
+            <Link href={`/account`}>
+              <span className={`text-3xl inline-block place-self-center p-2`}>
+                📝
+              </span>
+              <span className={`block text-sm font-bold`}>アカウント情報</span>
+            </Link>
+          </li>
+          <li className={`text-center`} onClick={supabaseSignOut}>
+            <span className={`text-3xl inline-block place-self-center p-2`}>
+              🔓
+            </span>
+            <span className={`block text-sm font-bold`}>ログオフする</span>
+          </li>
+        </ul>
+      </footer>
+    </>
   );
 }
