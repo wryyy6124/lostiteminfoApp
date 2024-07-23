@@ -98,7 +98,7 @@ export default function detailPage() {
                     type="checkbox"
                     id="adminDone"
                     name="adminDone"
-                    checked
+                    defaultChecked
                   />
                   <label className={`ml-2`} htmlFor="adminDone">
                     このスレッドを「解決済み」に設定する

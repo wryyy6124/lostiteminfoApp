@@ -236,9 +236,6 @@ const EditUser = ({ params }: {params: UpdateProfileProps}) => {
                       onChange={(e) => setRole(e.target.value)}
                       required
                     >
-                      <option value="" disabled selected className="hidden">
-                        ユーザーの権限を選択してください。
-                      </option>
                       <option value="user">user</option>
                       <option value="admin">admin</option>
                     </select>
