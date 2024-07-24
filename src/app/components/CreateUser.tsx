@@ -5,13 +5,13 @@ import { createClientComponentClient, Session } from '@supabase/auth-helpers-nex
 import { useRouter } from 'next/navigation';
 import useAuth from '../useAuth';
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
+import styles from '../admin/adduser/AddUser.module.css';
 
 export default function CreateUser() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user');
   const [remarksColumn, setRemarksColumn] = useState('');
-  const [temporaryPassword, setTemporaryPassword] = useState('');
   const [session, setSession] = useState<Session | null>(null);
 
   const router = useRouter();
@@ -57,7 +57,6 @@ export default function CreateUser() {
         setPassword('');
         setRole('user');
         setRemarksColumn('');
-        setTemporaryPassword('');
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -68,79 +67,65 @@ export default function CreateUser() {
     }
   };
 
-  const generateTemporaryPassword = () => {
-    const tempPassword = Math.random().toString(36).slice(-8);
-    setTemporaryPassword(tempPassword);
-    setPassword(tempPassword);
-  };
-
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-center mb-6">新規ユーザーを追加する</h1>
-      <div className="mt-8 mb-8">
-        <p>登録者 ID: {session?.user?.id}</p>
+    <div className={`w-full pb-24`}>
+    <h2
+      className={`w-full bg-neutral-100 text-lg text-red-500 font-bold z-10 sticky top-0 ${styles.contents_h2}`}
+    >
+      <div className={`w-full max-w-5xl mx-auto p-4`}>
+        🙋 新規ユーザーを追加する
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">メールアドレス:</label>
-          <input
-            type="email"
-            placeholder="例: abcde@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded"
-            required
-          />
+    </h2>
+    <div className={`w-full max-w-5xl mx-auto p-5 mt-5`}>
+      <div className={`w-full max-w-3xl mx-auto`}>
+        <form className={`w-full`} onSubmit={handleSubmit}>
+          <div className={`mb-7`}>
+            <label className={`text-sm font-bold mb-1.5`}>メールアドレス</label>
+            <div className={`mt-1 mb-2`}>
+              <input
+                type="email"
+                placeholder="例: abcde@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200`}
+                required
+              />
+            </div>
+          </div>
+        <div className={`mb-7`}>
+          <label className={`text-sm font-bold mb-1.5`}>権限</label>
+            <div className={`mt-1 mb-2`}>
+              <div className={`w-80`}>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className={`${styles.select} w-full text-sm p-3 rounded-md border-2 border-solid border-blue-gray-200 focus:border-2`}
+                required
+                title="Role"
+              >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-3">権限:</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full p-3 mb-10 border border-gray-300 rounded"
-            required
-            title="Role"
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+      </div>
+        <div className={`mb-14`}>
+          <label className={`text-sm font-bold mb-1.5`}>備考欄</label>
+            <div className="mt-1 mb-2">
+              <textarea
+                placeholder="登録情報など必要に応じて記入ください。"
+                value={remarksColumn}
+                onChange={(e) => setRemarksColumn(e.target.value)}
+                className={`w-full text-sm p-3 rounded-md border-2 border-solid border-gray-200`}
+              />
+            </div>
         </div>
-        <div className="flex align-items: center justify-center">
-          {temporaryPassword && <p className="mt-4 text-gray-700">発行パスワード: {temporaryPassword}</p>}
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold">仮パスワード:</label>
-          <input
-            type="password"
-            placeholder="例: ab12%&~aet"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 rounded h-12 border flex-grow"
-            required
-          />
-        </div>
-        <div className="flex align-items: center justify-center">
-          <button
-            type="button"
-            onClick={generateTemporaryPassword}
-            className="w-1/2 p-3 mt-8 bg-black text-white rounded hover:bg-gray-700"
-          >
-            仮パスワードを生成
-          </button>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mt-6 mb-2">備考欄:</label>
-          <textarea
-            placeholder="登録情報など必要に応じて記入ください。"
-            value={remarksColumn}
-            onChange={(e) => setRemarksColumn(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded"
-          />
-        </div>
-        <div className="flex align-items: center justify-center">
-          <button type="submit" className="w-1/2 p-3 mt-8 mb-8 bg-black text-white rounded hover:bg-gray-700">ユーザーを追加する</button>
+        <div className={`flex justify-center`}>
+          <button type="submit" className={`block w-5/6 md:w-1/2 rounded-lg bg-gray-950 p-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700`}>ユーザーを追加する</button>
         </div>
       </form>
     </div>
+  </div>
+</div>
   );
 }
