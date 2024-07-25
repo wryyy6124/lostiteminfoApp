@@ -75,14 +75,17 @@ export default function ListUsers({ onEdit }: ListUsersProps) {
   };
 
   useEffect(() => {
-    const searchQueryLower = searchQuery.toLowerCase();
+    const searchWords = searchQuery.toLowerCase().trim().split(/\s+/); // 修正箇所: スペースで分割してワードの配列を取得
+
     const filtered = users.filter(user => {
       const userProfile = remarks[user.id] || { role: '未設定', remarks: '' }; // デフォルト値を設定
-      return (
-        user.id.toLowerCase().includes(searchQueryLower) ||
-        user.email.toLowerCase().includes(searchQueryLower) ||
-        userProfile.role.toLowerCase().includes(searchQueryLower) ||
-        userProfile.remarks.toLowerCase().includes(searchQueryLower)
+
+      // 各ワードがID、メール、権限、備考欄に含まれているかをチェック
+      return searchWords.every((word) =>
+        user.id.toLowerCase().includes(word) ||
+        user.email.toLowerCase().includes(word) ||
+        userProfile.role.toLowerCase().includes(word) ||
+        userProfile.remarks.toLowerCase().includes(word)
       );
     });
     setFilteredUsers(filtered);

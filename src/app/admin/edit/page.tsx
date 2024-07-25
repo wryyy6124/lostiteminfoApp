@@ -33,17 +33,10 @@ export default function EditPage() {
           </h1>
         </div>
       </header>
-        <ListUsers onEdit={handleEdit} />
-        <ul className={`w-fit mx-auto flex py-2`}>
-          <li className={`text-center`}>
-            <Link href="/account" className={`text-xl inline-block place-self-center p-2`}>
-              アカウント情報に戻る
-            </Link>
-          </li>
-        </ul>
-        <footer
-        className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
-      >
+      <ListUsers onEdit={handleEdit} />
+      <footer
+      className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
+    >
         <ul className={`w-fit mx-auto flex gap-10 py-2`}>
           <li className={`text-center`}>
             <Link href="/account">

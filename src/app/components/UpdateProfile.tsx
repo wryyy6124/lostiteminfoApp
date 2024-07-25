@@ -11,7 +11,7 @@ import styles from '../admin/edit/[userid]/UserId.module.css';
 
 export default function UpdateProfile() {
   const [email, setEmail] = useState('');
-  // const [temporaryPassword, setTemporaryPassword] = useState('');
+  const [temporaryPassword, setTemporaryPassword] = useState('');
   const [role, setRole] = useState('user');
   const [remarksColumn, setRemarksColumn] = useState('');
   const [user, setUser] = useState<any | null>(null);
@@ -108,28 +108,28 @@ export default function UpdateProfile() {
     }
   };
 
-  // const handleGenerateTemporaryPassword = async () => {
-  //   const generatedPassword = Math.random().toString(36).slice(-8); // 仮パスワードを生成
-  //   setTemporaryPassword(generatedPassword);
+  const handleGenerateTemporaryPassword = async () => {
+    const generatedPassword = Math.random().toString(36).slice(-8); // 仮パスワードを生成
+    setTemporaryPassword(generatedPassword);
 
-  //   try {
-  //     const { error: passwordError } = await supabase.auth.admin.updateUserById(userid as string, {
-  //       password: generatedPassword,
-  //     });
+    try {
+      const { error: passwordError } = await supabase.auth.admin.updateUserById(userid as string, {
+        password: generatedPassword,
+      });
 
-  //     if (passwordError) {
-  //       throw new Error(passwordError.message);
-  //     }
+      if (passwordError) {
+        throw new Error(passwordError.message);
+      }
 
-  //     alert('Temporary password generated and updated successfully');
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       alert(`Failed to generate temporary password: ${error.message}`);
-  //     } else {
-  //       alert('Failed to generate temporary password: An unknown error occurred');
-  //     }
-  //   }
-  // };
+      alert('Temporary password generated and updated successfully');
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(`Failed to generate temporary password: ${error.message}`);
+      } else {
+        alert('Failed to generate temporary password: An unknown error occurred');
+      }
+    }
+  };
 
   return (
     <div className="w-full pb-24">
@@ -193,10 +193,10 @@ export default function UpdateProfile() {
                   </div>
                 </div>
               </div>
-              {/* <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 {temporaryPassword && <p className="mt-4 text-gray-700">発行パスワード: {temporaryPassword}</p>}
-              </div> */}
-              {/* <div className="mb-4">
+              </div>
+              <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-6">パスワード:</label>
                 <input
                   type="password"
@@ -213,7 +213,7 @@ export default function UpdateProfile() {
                 >
                   仮パスワードを生成
                 </button>
-              </div> */}
+              </div>
               <div className="mb-14">
                 <label className="text-sm font-bold mb-1.5" htmlFor="remarks">
                   備考欄
