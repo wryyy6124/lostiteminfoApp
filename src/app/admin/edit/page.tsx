@@ -1,92 +1,18 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { supabaseAdmin as supabase} from "../../../../lib/supabaseAdmin";
-import { createClientComponentClient, Session } from '@supabase/auth-helpers-nextjs';
-import useAuth from '@/app/useAuth';
-import { UUID } from "crypto";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import styles from "./Edit.module.css";
+'use client';
 
-export default function EditListPage() {
+import { useState } from 'react';
+import ListUsers from '../../components/ListUsers';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import styles from './Edit.module.css';
+
+export default function EditPage() {
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const router = useRouter();
-  const [users, setUsers] = useState<any[]>([]);
-  const [session, setSession] = useState<Session | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  // const [remarks, setRemarks] = useState<{ [key: string]: { role: string; remarks: string } }>({});
 
-  // アドミンユーザ以外は/loginへ遷移
-  const supabaseClient = createClientComponentClient();
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      setSession(session);
-      console.log('Session:', session);
-    };
-  
-    getSession();
-  }, [supabaseClient.auth]);
-
-  useAuth();
-
-  // ユーザー一覧情報をsupabaseより取得
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data, error } = await supabase.auth.admin.listUsers();
-
-      if (error) {
-        alert(`Failed to list users: ${error.message}`);
-      } else {
-        setUsers(data.users);
-      }
-
-    //   const { data: profileData, error: profileError } = await supabase
-    //   .from('profile')
-    //   .select('id, role, remarks_column')
-    //   .order('created_at', { ascending: false }); // created_atで降順に並び替え
-
-    // if (profileError) {
-    //   console.error('Error fetching profiles:', profileError);
-    // } else if (profileData) {
-    //   const remarksMap: { [key: string]: { role: string; remarks: string } } = {};
-    //   profileData.forEach((profile: { id: string; role: string | null; remarks_column: string | null }) => {
-    //     remarksMap[profile.id] = { role: profile.role ?? '未設定', remarks: profile.remarks_column ?? '' };
-    //   });
-    //   setRemarks(remarksMap);
-    // }
-    };
-    fetchUsers();
-  }, []);
-
-// ユーザーをsupabaseで削除、画面表示も更新
-  const deleteUser = async (userId: UUID) => {
-    try {
-      const { error } = await supabase.auth.admin.deleteUser(userId);
-
-      if (error) {
-        alert(`Failed to delete user: ${error.message}`);
-      } else {
-        alert("User deleted successfully");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(`Failed to delete user: ${error.message}`);
-      } else {
-        alert("Failed to delete user: An unknown error occurred");
-      }
-    }
-    // 削除されたユーザー以外を再表示
-    setUsers(users.filter((user) => user.id !== userId));
-  };
-
-  // ページネーション関連
-  const recordsPerPage = 16;
-  const startIndex = (currentPage - 1) * recordsPerPage;
-  const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
-  const totalPages = Math.ceil(users.length / recordsPerPage);
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handleEdit = (userId: string) => {
+    setSelectedUserId(userId);
+    router.push(`/admin/edit/${userId}`);
   };
 
   return (
@@ -107,75 +33,10 @@ export default function EditListPage() {
           </h1>
         </div>
       </header>
-      <main className={`w-full pb-24`}>
-        <div className={`w-full`}>
-          <h2
-            className={`w-full bg-neutral-100 text-lg font-bold z-10 sticky top-0 ${styles.contents_h2}`}
-          >
-            <div className={`w-full max-w-5xl mx-auto p-4`}>
-              🗒️ 登録済みユーザーのリスト
-            </div>
-          </h2>
-          <div className={`w-full max-w-5xl mx-auto p-5`}>
-            <div className={`w-full max-w-3xl mx-auto`}>
-              <h3 className={`text-sm font-bold mb-1.5`}>
-                登録済みユーザー一覧
-              </h3>
-              <ol className={`w-full max-w-3xl mx-auto ${styles.user_list}`}>
-                {selectedUsers.map((user) => (
-                  <li
-                    key={user.id}
-                    className={`border-b-2 border-b-solid border-gray-200 flex flex-wrap flex-row items-center justify-between w-full max-w-3xl mx-auto py-6`}
-                  >
-                    <div className={`flex-auto`}>
-                      <p className={`text-sm text-slate-800 font-bold`}>
-                        {user.email}
-                      </p>
-                      {/* 確認用。マージ前に消す予定です。 */}
-                      <p className={`text-sm text-slate-800 font-bold`}>
-                        {user.id}
-                      </p>
-                    </div>
-                    <div className={`flex-none flex flex-row gap-x-2`}>
-                      <button
-                        className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                        onClick={() => router.push(`edit/${user.id}`)}
-                      >
-                        修正
-                      </button>
-                      <button
-                        className={`rounded-md bg-black text-white text-xs px-4 py-3`}
-                        onClick={() => deleteUser(user.id)}
-                      >
-                        削除
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <div className="mt-4 flex justify-center space-x-2">
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                    key={index + 1}
-                    onClick={() => handlePageChange(index + 1)}
-                    disabled={currentPage === index + 1}
-                    className={`py-2 px-4 rounded ${
-                      currentPage === index + 1
-                        ? "bg-gray-300"
-                        : "bg-white hover:bg-gray-100"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <ListUsers onEdit={handleEdit} />
       <footer
-        className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
-      >
+      className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
+    >
         <ul className={`w-fit mx-auto flex gap-10 py-2`}>
           <li className={`text-center`}>
             <Link href="/account">
@@ -189,4 +50,4 @@ export default function EditListPage() {
       </footer>
     </>
   );
-};
+}
