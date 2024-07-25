@@ -59,7 +59,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
     };
 
     getSession();
-  }, [supabaseClient.auth]);
+  }, [supabaseClient]);
 
   const handleSaveChanges = async () => {
     try {

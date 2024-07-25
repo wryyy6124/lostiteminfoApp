@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -103,7 +103,9 @@ export default function TopPage(): JSX.Element {
           {/* ) : null} */}
 
           {/* 落とし物リストのコンポーネント呼び出し */}
-          <PostList />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostList />
+          </Suspense>
         </div>
       </main>
 
