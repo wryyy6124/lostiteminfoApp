@@ -67,7 +67,7 @@ export default function AccountPage() {
           </div>
         </h2>
         {/* 管理者権限限定機能 */}
-        {userRole === "admin" ? (
+        {/* {userRole === "admin" ? ( */} {/*お披露目用にroleがadminの場合でなくても表示するように設定。*/}
           <div className={`w-full max-w-3xl mx-auto`}>
             <div
               className={`w-full max-w-3xl mx-auto pt-10 px-5 text-center text-lg font-bold text-teal-400`}
@@ -97,7 +97,7 @@ export default function AccountPage() {
               </ul>
             </div>
           </div>
-        ) : null}
+        {/* ) : null} */}
       </main>
       <footer
         className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}

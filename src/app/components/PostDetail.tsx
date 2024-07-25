@@ -218,7 +218,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
           )}
         </div>
       </div>
-      {userRole === 'admin' && (
+      {/* {userRole === 'admin' && ( */} {/*お披露目用にroleがadminの場合でなくても表示するように設定。*/}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">★ 管理者権限設定 <span className="text-sm text-gray-600"></span></h2>
           <ul className="list-disc pl-5 space-y-2">
@@ -275,7 +275,7 @@ const PostDetail = ({ postId }: PostDetailProps) => {
             </button>
           )}
         </div>
-      )}
+      {/* )} */}
       <button
         onClick={() => router.back()}
         className="mt-4 px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-700"

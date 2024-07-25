@@ -75,15 +75,28 @@ const PostList = (): JSX.Element => {
   );
 
   useEffect((): void => {
-    const searchQueryLower = searchQuery.toLowerCase();
+    const searchWords = searchQuery.toLowerCase().trim().split(/\s+/);
 
     const filtered = posts.filter((post) => {
-      const dateMatch = new Date(post.find_date)
-        .toLocaleDateString()
-        .includes(searchQueryLower);
+      const dateFormatted = new Date(post.find_date).toLocaleDateString('ja-JP', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      const resolvedMatch = searchWords.includes("済")
+        ? post.resolved
+        : searchWords.includes("未")
+        ? !post.resolved
+        : true;
 
       return (
-        post.lostitem_name.toLowerCase().includes(searchQueryLower) || dateMatch
+        resolvedMatch &&
+        searchWords.every(
+          (word) =>
+            post.lostitem_name.toLowerCase().includes(word) ||
+            dateFormatted.includes(word) ||
+            word === "済" ||
+            word === "未"
+        )
       );
     });
 

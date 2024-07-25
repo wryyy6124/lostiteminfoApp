@@ -93,13 +93,14 @@ export default function TopPage(): JSX.Element {
           </h2>
 
           {/* アカウント権限検証用 */}
-          {userRole === "admin" ? (
+          {/* {userRole === "admin" ? ( */}
             <div
               className={`w-full max-w-3xl mx-auto pt-10 px-5 text-center text-lg font-bold text-teal-400`}
             >
-              {userRole}権限用の画面です。
+              {/* {userRole}権限用の画面です。 */}
+              管理者権限用の画面です。 {/*お披露目用にroleがadminの場合でなくても表示するように設定。*/}
             </div>
-          ) : null}
+          {/* ) : null} */}
 
           {/* 落とし物リストのコンポーネント呼び出し */}
           <PostList />
@@ -111,14 +112,16 @@ export default function TopPage(): JSX.Element {
         className={`w-full bg-neutral-50 fixed bottom-0 ${styles.footer}`}
       >
         <ul className={`w-fit mx-auto flex gap-10 py-2`}>
+          {/* {userRole === "admin" ? ( */}
           <li className={`text-center cursor-pointer`}>
             <Link href={`/account`}>
               <span className={`text-3xl inline-block place-self-center p-2`}>
                 📝
               </span>
-              <span className={`block text-sm font-bold`}>アカウント情報</span>
+              <span className={`block text-sm font-bold`}>アカウント情報</span> {/*お披露目用にroleがadminの場合でなくても表示するように設定。*/}
             </Link>
           </li>
+          {/* ) : null} */}
           <li
             className={`text-center cursor-pointer`}
             onClick={supabaseSignOut}
