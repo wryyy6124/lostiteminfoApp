@@ -72,7 +72,8 @@ export default function AccountPage() {
             <div
               className={`w-full max-w-3xl mx-auto pt-10 px-5 text-center text-lg font-bold text-teal-400`}
             >
-              以下は{userRole}権限限定のリンク導線です。
+              {/* 以下は{userRole}権限限定のリンク導線です。 */} {/*お披露目用にroleがadminの場合でなくても表示するように設定。*/}
+              以下は管理者のリンク導線です。
             </div>
             <div
               className={`w-full max-w-xl w-fit mx-auto bg-yellow-50 p-5 mt-5`}
